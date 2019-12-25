@@ -1,0 +1,2 @@
+LIBRARY
+	luaopen_protobuf_c

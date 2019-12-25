@@ -1,0 +1,4 @@
+EXPORTS
+	agentc_create
+	agentc_release
+	agentc_init

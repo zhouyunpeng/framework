@@ -1,0 +1,31 @@
+l3deditor::Bom::Document doc;
+		doc.mutable__id()->operator[]("$oid") = "5dd8c90da205c1868c6898bc";
+		std::string outMsg;
+		google::protobuf::util::JsonPrintOptions gjsonOp;
+		gjsonOp.always_print_enums_as_ints = true;
+		gjsonOp.always_print_primitive_fields = true;
+		gjsonOp.preserve_proto_field_names = true;
+		google::protobuf::util::MessageToJsonString(doc, &outMsg, gjsonOp);
+		MongoDB* pMongoDB = g->mongoDB;
+		std::string strOptions = "{\"projection\":{\"field\":0}}";
+		struct QueryContext* queryCtx = pMongoDB->QueryCollections("Doc", "", strOptions.c_str());
+		int iDocCnt = 1;
+		std::string jsonDoc;
+		::grpc::Status grpcStatus;
+		google::protobuf::util::JsonParseOptions jsonParseOp;
+		jsonParseOp.ignore_unknown_fields = true;
+		while (pMongoDB->CursorNext(queryCtx, jsonDoc))
+		{
+			doc.Clear();
+			google::protobuf::util::Status parseStatus = google::protobuf::util::JsonStringToMessage(jsonDoc, &doc, jsonParseOp);
+			if (parseStatus.ok()) {
+				
+			}
+		}
+		auto idMap = doc._id();
+		auto idItor = idMap.find("$oid");
+		std::string objId;
+		if (idItor != idMap.cend()) {
+			objId = idItor->second;
+		}
+		pMongoDB->QueryCtxDestory(queryCtx);

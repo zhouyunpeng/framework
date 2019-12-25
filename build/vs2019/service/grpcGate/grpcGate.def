@@ -1,0 +1,4 @@
+EXPORTS
+	grpcGate_create
+	grpcGate_release
+	grpcGate_init
